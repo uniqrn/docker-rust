@@ -1,10 +1,16 @@
-FROM debian:stretch-slim
+FROM debian:buster-20190910-slim
 LABEL maintainer "unicorn research Ltd."
 
-RUN apt-get update && apt-get install -y curl
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		ca-certificates \
+		curl \
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 ENV PATH /root/.cargo/bin:$PATH
 RUN rustup target add wasm32-unknown-unknown --toolchain nightly
