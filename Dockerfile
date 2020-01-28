@@ -6,6 +6,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
 		curl \
+		gcc libc-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
@@ -13,4 +14,5 @@ WORKDIR /root
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 ENV PATH /root/.cargo/bin:$PATH
+ENV USER root
 RUN rustup target add wasm32-unknown-unknown
